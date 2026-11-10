@@ -1,0 +1,25 @@
+{
+  "name": "nautt-motion",
+  "private": true,
+  "type": "module",
+  "description": "Nautt Finance motion videos (Remotion). One folder per production, shared brand layer.",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "typecheck": "tsc -p .",
+    "vo": "node --no-warnings scripts/gen-vo.mjs",
+    "vo:check": "node --no-warnings scripts/check-vo.mjs",
+    "vo:stats": "sh scripts/vo-stats.sh",
+    "render": "sh scripts/render.sh"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.300",
+    "@remotion/google-fonts": "4.0.300",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.300"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}
