@@ -235,6 +235,18 @@ const ICONS: Record<string, React.ReactNode> = {
     </>
   ),
   withdraw: <path d="M12 4v12M6 10l6 6 6-6M5 20h14" />,
+  mail: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </>
+  ),
+  card: (
+    <>
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+      <path d="M2.5 10h19M6.5 15h4" />
+    </>
+  ),
   node: (
     <>
       <rect x="4" y="4" width="16" height="16" rx="4" />
