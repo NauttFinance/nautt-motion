@@ -34,4 +34,4 @@ EN ≈ 1:43 · PT ≈ 1:49 · ES ≈ 2:01
 
 ## Release
 
-Finals: GitHub Release `web3auth-maintenance-v1`.
+Finals: [GitHub Release `web3auth-maintenance-v1`](https://github.com/NauttFinance/nautt-motion/releases/tag/web3auth-maintenance-v1) (PT / ES / EN MP4s).
