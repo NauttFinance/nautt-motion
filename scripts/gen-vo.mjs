@@ -22,6 +22,7 @@ if (!PROD || !existsSync(`productions/${PROD}/copy.ts`) || !['en', 'pt', 'es'].i
   process.exit(1);
 }
 const copy = await import(`../productions/${PROD}/copy.ts`);
+const brand = await import('../brand/voice.ts');
 
 // Brand voices from the ElevenLabs library: Alice (EN), Roberta (Brazilian PT), Tatiana (neutral LatAm ES).
 // PT must never sound like Portugal; ES must sound native, not a foreigner speaking Spanish.
@@ -32,9 +33,17 @@ const arg = (name, def) => {
 };
 const VOICE = arg('voice', DEFAULT_VOICE[LANG]);
 const ONLY_LINE = arg('line') ? Number(arg('line')) - 1 : null;
-const STABILITY = Number(arg('stability', 0.5));
-const STYLE = Number(arg('style', 0.15));
-const SPEED = Number(arg('speed', 1.0));
+// Defaults: brand/voice.ts VOICE_SETTINGS, then the production's VO_SETTINGS, then CLI flags.
+const DEF = {stability: 0.5, style: 0.15, speed: 1.0, ...brand.VOICE_SETTINGS?.[LANG], ...copy.VO_SETTINGS?.[LANG]};
+const STABILITY = Number(arg('stability', DEF.stability));
+const STYLE = Number(arg('style', DEF.style));
+const SPEED = Math.min(Number(arg('speed', DEF.speed)), 1.2); // ElevenLabs accepts 0.7–1.2
+// Per-line overrides from the production (copy.ts VO_LINE_SETTINGS[lang][lineNumber], 1-based); CLI flags still win.
+const lineSettings = (i) => {
+  const o = copy.VO_LINE_SETTINGS?.[LANG]?.[i + 1] ?? {};
+  const pick = (name, base) => (process.argv.includes(`--${name}`) || o[name] === undefined ? base : o[name]);
+  return {stability: pick('stability', STABILITY), style: pick('style', STYLE), speed: Math.min(pick('speed', SPEED), 1.2)};
+};
 const LINES = copy.STR[LANG].vo;
 const audioDir = `public/${PROD}/vo/${LANG}`;
 mkdirSync(audioDir, {recursive: true});
@@ -45,17 +54,23 @@ const MODEL = 'eleven_multilingual_v2';
 // English brand/product names inside PT/ES lines: SPEAK_AS respells them for the TTS only (the screen keeps
 // the real name), and VO_CHECKS re-transcribes each take with English STT, regenerating it (up to 4 takes)
 // until every occurrence was heard right. See productions/web3auth-maintenance/copy.ts for an example.
-const SPEAK_AS = copy.SPEAK_AS ?? {};
+// Respellings come from brand/voice.ts PRONUNCIATION, overridden by the production's SPEAK_AS.
+// A value is either a string (PT and ES) or {pt, es} per language.
+const SPEAK_AS = {...brand.PRONUNCIATION, ...(copy.SPEAK_AS ?? {})};
 const VO_CHECKS = copy.VO_CHECKS ?? [];
+const respell = (to) => (typeof to === 'string' ? to : to?.[LANG]);
 const speak = (text) =>
-  LANG === 'en' ? text : Object.entries(SPEAK_AS).reduce((t, [from, to]) => t.replaceAll(from, to), text);
+  LANG === 'en'
+    ? text
+    : Object.entries(SPEAK_AS).reduce((t, [from, to]) => (respell(to) ? t.replaceAll(from, respell(to)) : t), text);
 
 const heardOk = async (audio, line) => {
   const checks = VO_CHECKS.filter((c) => line.includes(c.term));
   if (checks.length === 0) return true;
   const form = new FormData();
   form.append('model_id', 'scribe_v1');
-  form.append('language_code', 'en');
+  // English STT by default (English names inside PT/ES); a check with stt: 'auto' lets STT detect the language.
+  if (!checks.some((c) => c.stt === 'auto')) form.append('language_code', 'en');
   form.append('file', new Blob([audio]), 'a.mp3');
   const r = await fetch('https://api.elevenlabs.io/v1/speech-to-text', {method: 'POST', headers: {'xi-api-key': key}, body: form});
   const {text} = await r.json();
@@ -85,7 +100,7 @@ for (let i = 0; i < LINES.length; i++) {
           model_id: MODEL,
           // previous_text only: next_text makes the line end with a "to be continued" rise.
           previous_text: i > 0 ? speak(LINES[i - 1]) : undefined,
-          voice_settings: {stability: STABILITY, similarity_boost: 0.8, style: STYLE, speed: SPEED, use_speaker_boost: process.argv.includes('--boost')},
+          voice_settings: {...lineSettings(i), similarity_boost: 0.8, use_speaker_boost: process.argv.includes('--boost')},
         }),
       },
     );
@@ -117,7 +132,7 @@ for (let i = 0; i < LINES.length; i++) {
   const d = probe(file);
   durations[i] = d;
   alignment[i] = {text: a.characters.join(''), starts: a.character_start_times_seconds};
-  console.log(`vo${i + 1}: ${d.toFixed(2)}s`);
+  console.log(`vo${i + 1}: ${d.toFixed(2)}s (speed ${lineSettings(i).speed})`);
 }
 writeFileSync(outJson, JSON.stringify({voice: VOICE, durations, alignment}));
-console.log('done');
+console.log(`done (speed ${SPEED}, stability ${STABILITY}, style ${STYLE})`);

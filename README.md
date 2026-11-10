@@ -72,6 +72,8 @@ Scenes stretch to fit each VO line, so after regenerating audio just render agai
 | PT-BR | Roberta (`RGymW84CSmfVugnA5tvA`) | native Brazilian; PT must never sound like Portugal |
 | ES | Tatiana (`2rigMbVWLdqtBSCahJFX`) | neutral Latin American, *usted*; works for AR / CL / PY |
 
+Shared defaults (PT speed 1.2, USDT → "uéssedetê") live in `brand/voice.ts`; PT-BR voice rules: `.agents/skills/nautt-voice-ptbr/SKILL.md`.
+
 English names inside PT/ES lines (e.g. Web3Auth) go in the production's `SPEAK_AS` + `VO_CHECKS`:
 the generator respells them for the TTS only and re-transcribes each take until they sound right.
 
