@@ -8,7 +8,7 @@ Priority: P0 = do before the next production ships, P1 = next sprint, P2 = when 
 | 1 | P0 | Remotion Company License | Free tier only covers orgs ≤ 3 people; "Creators" seat is per person writing Remotion code (agents included) | remotion.pro → `--license-key` in render | decision (CTO) |
 | 2 | P0 | Read fps from `useVideoConfig()` | `brand/vo.ts` (`starts[idx] * 30`) and `brand/ui.tsx` (`FPS = 30`) hardcode 30 fps; a 25/60 fps variant silently desyncs cues | `brand/vo.ts`, `brand/ui.tsx` | 15 min |
 | 3 | P0 | Upgrade 4.0.300 → latest 4.0.x (4.0.542 on 2026-11-09) | bug fixes, `@remotion/media`, newer APIs; same major | `pnpm exec remotion upgrade`, keep exact pins, typecheck + render 3 langs | 1 h |
-| 4 | P0 | Install official Remotion agent skills | `remotion-best-practices` router + markup rules (voiceover, calculate-metadata, transitions, measuring-text) for every AI runtime | `npx skills add remotion-dev/skills` (verify install path) | 10 min |
+| 4 | P0 | ~~Install official Remotion agent skills~~ | done 2026-11-12 — copied into `.agents/skills/remotion-*` with Claude/Cursor symlinks; see `skills-lock.json` | refresh from `remotion-dev/skills` when upgrading Remotion | done |
 | 5 | P1 | `<Audio>` from `@remotion/media` | recommended component; core `<Audio>` is now `<Html5Audio>` | `npx remotion add @remotion/media`, `Film.tsx` | 30 min |
 | 6 | P1 | Duration via `calculateMetadata` | per-language duration + scene starts from VO in one place; `defaultOutName` `<slug>-<lang>` | each production `index.tsx` / `Film.tsx` | 2–3 h |
 | 7 | P1 | `<TransitionSeries>` + `fade()` / `linearTiming` | replaces hand-rolled `starts[]` + `SceneFade` | `Film.tsx` | 2 h |

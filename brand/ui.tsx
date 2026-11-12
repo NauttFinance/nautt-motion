@@ -253,6 +253,36 @@ const ICONS: Record<string, React.ReactNode> = {
       <path d="M9 12h6M12 9v6" />
     </>
   ),
+  building: (
+    <>
+      <path d="M4 20V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14" />
+      <path d="M16 10h2a2 2 0 0 1 2 2v8" />
+      <path d="M9 20v-4h4v4M9 8h.01M13 8h.01M9 12h.01M13 12h.01" />
+    </>
+  ),
+  user: (
+    <>
+      <circle cx="12" cy="8" r="3.5" />
+      <path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5" />
+    </>
+  ),
+  upload: (
+    <>
+      <path d="M12 16V5M7 9l5-5 5 5M5 20h14" />
+    </>
+  ),
+  file: (
+    <>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+    </>
+  ),
+  camera: (
+    <>
+      <path d="M4 8h3l2-2h6l2 2h3v11H4z" />
+      <circle cx="12" cy="13" r="3.5" />
+    </>
+  ),
 };
 
 export const Icon: React.FC<{name: keyof typeof ICONS; size?: number; color?: string}> = ({

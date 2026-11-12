@@ -6,7 +6,9 @@ unless the brief says the audience speaks a single language.
 
 **Before any video work, read and follow the skill `.agents/skills/nautt-video/SKILL.md`** (workflow,
 writing rules, compliance guardrails, brand, voices). For PT-BR voiceover also follow
-`.agents/skills/nautt-voice-ptbr/SKILL.md` (pace, pronunciation, review loop). Commands and layout: `README.md`.
+`.agents/skills/nautt-voice-ptbr/SKILL.md` (pace, pronunciation, review loop). For Remotion API /
+markup / render details use `.agents/skills/remotion-best-practices/SKILL.md` (and sibling
+`remotion-*` skills). Nautt skills win on brand, copy and compliance. Commands and layout: `README.md`.
 Reference production: `productions/web3auth-maintenance/`.
 
 ## Rules for every agent

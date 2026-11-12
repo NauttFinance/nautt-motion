@@ -25,15 +25,28 @@ scripts/                    gen-vo, check-vo, vo-stats, render (all take the pro
 src/Root.tsx                registers every production
 ```
 
-## Setup
+## Setup (team install)
+
+Prereqs: **Node 22.6+**, **pnpm**, **ffmpeg** + **ffprobe** on PATH, and an ElevenLabs API key
+(shared privately — never commit `.env`).
 
 ```bash
+git clone https://github.com/NauttFinance/nautt-motion.git
+cd nautt-motion
 pnpm install
-cp .env.example .env   # add your ElevenLabs API key (never commit .env)
-pnpm studio            # preview every production in the browser
+cp .env.example .env   # paste ELEVENLABS_API_KEY
+pnpm studio            # http://localhost:3000 — every production in the browser
 ```
 
-Requires Node 22.6+ (scripts import `copy.ts` directly) and `ffmpeg` / `ffprobe` on the PATH.
+Smoke check after install:
+
+```bash
+pnpm typecheck
+pnpm exec remotion compositions src/index.ts   # lists onboarding / web3auth / credit-card × langs
+```
+
+Agent skills ship in-repo (see `AGENTS.md`): Nautt rules + Remotion best-practices under
+`.agents/skills/`, with Claude/Cursor symlinks in `.claude/skills/` and `.cursor/skills/`.
 
 ## Workflow
 
