@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "source": "https://github.com/remotion-dev/skills",
+  "installedAt": "2026-11-12",
+  "skills": [
+    "nautt-video",
+    "nautt-voice-ptbr",
+    "remotion-best-practices",
+    "remotion-captions",
+    "remotion-create",
+    "remotion-docs",
+    "remotion-interactivity",
+    "remotion-license",
+    "remotion-maps",
+    "remotion-markup",
+    "remotion-multimedia",
+    "remotion-render",
+    "remotion-saas",
+    "remotion-studio",
+    "remotion-upgrade"
+  ],
+  "note": "Nautt skills are authored in-repo. Remotion skills copied from remotion-dev/skills (hooksPath clone). Refresh with: git clone remotion-dev/skills && copy skills/remotion-* into .agents/skills/"
+}
